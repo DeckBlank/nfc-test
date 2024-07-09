@@ -31,17 +31,15 @@ const  read = () =>{
           //ndef.onreading = async ({ message }) => {
           ndef.onreading = async event => {
               const message = event.message;
-              console.log(event);
-              console.log(message);
               setOutput(JSON.stringify(message.records))
-              let newOutput = '';
-              for (const record of message.records) {
+              //let newOutput = '';
+              /* for (const record of message.records) {
                   const textDecoder = new TextDecoder(record.encoding);
                   newOutput += `Tipo de registro: ${record.recordType}\n`;
                   newOutput += `Tipo de medio: ${record.mediaType}\n`;
                   newOutput += `Datos: ${textDecoder.decode(record.data)}\n`;
-              }
-              setOutput(newOutput);
+              } */
+              setOutput(event.serialNumber);
           };
           ndef.onreadingerror = async  () => {
               setOutput("Error de lectura.");
