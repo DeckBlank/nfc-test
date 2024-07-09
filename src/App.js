@@ -31,6 +31,8 @@ const  read = () =>{
           //ndef.onreading = async ({ message }) => {
           ndef.onreading = async event => {
               const message = event.message;
+              console.log(event);
+              console.log(message);
               setOutput(JSON.stringify(message.records))
               let newOutput = '';
               for (const record of message.records) {
