@@ -23,46 +23,29 @@ const  read = () =>{
   });
 }
     const handleScan = async () => {
-        //if ('NDEFReader' in window) {
-          // eslint-disable-next-line no-undef
-            const ndef = new NDEFReader();
-            try {
-                //const tarjeta = await read();
-                read().then((tarjeta) => {
-                  setOutput(tarjeta);
-                }
-                );
-                setOutput("Esperando una etiqueta NFC...");
-                /* ndef.onreading = event => {
-                    const message = event.message;
-                    let newOutput = '';
-                    for (const record of message.records) {
-                        const textDecoder = new TextDecoder(record.encoding);
-                        newOutput += `Tipo de registro: ${record.recordType}\n`;
-                        newOutput += `Tipo de medio: ${record.mediaType}\n`;
-                        newOutput += `Datos: ${textDecoder.decode(record.data)}\n`;
-                    }
-                    setOutput(newOutput);
-                }; */
-                ndef.scan().then(() => {
-                  console.log("Scan started successfully.");
-                  ndef.onreadingerror = (event) => {
-                    console.log("Error! Cannot read data from the NFC tag. Try a different one?");
-                  };
-                  ndef.onreading = (event) => {
-                    const message = event.message;
-                    alert("NDEF message read." + message);
-                  };
-                }).catch(error => {
-                  console.log(`Error! Scan failed to start: ${error}.`);
-                });
-            } catch (error) {
-              alert(error.message);
-                setOutput(`Error al iniciar la lectura NFC: ${error}`);
-            }
-        /* } else {
-            setOutput("La API de Web NFC no es compatible con este navegador.");
-        } */
+      // eslint-disable-next-line no-undef
+      const ndef = new NDEFReader();
+      try {
+          await ndef.scan();
+          setOutput("Esperando una etiqueta NFC...");
+          //ndef.onreading = async ({ message }) => {
+          ndef.onreading = async event => {
+              const message = event.message;
+              let newOutput = '';
+              for (const record of message.records) {
+                  const textDecoder = new TextDecoder(record.encoding);
+                  newOutput += `Tipo de registro: ${record.recordType}\n`;
+                  newOutput += `Tipo de medio: ${record.mediaType}\n`;
+                  newOutput += `Datos: ${textDecoder.decode(record.data)}\n`;
+              }
+              setOutput(newOutput);
+          };
+          ndef.onreadingerror = () => {
+              setOutput("Error de lectura.");
+          };
+      } catch (error) {
+          setOutput(`Error al iniciar la lectura NFC: ${error}`);
+      }
     };
     useEffect(() => {
       try {
