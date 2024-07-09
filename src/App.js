@@ -31,6 +31,7 @@ const  read = () =>{
           //ndef.onreading = async ({ message }) => {
           ndef.onreading = async event => {
               const message = event.message;
+              setOutput(message)
               let newOutput = '';
               for (const record of message.records) {
                   const textDecoder = new TextDecoder(record.encoding);
@@ -40,7 +41,7 @@ const  read = () =>{
               }
               setOutput(newOutput);
           };
-          ndef.onreadingerror = () => {
+          ndef.onreadingerror = async  () => {
               setOutput("Error de lectura.");
           };
       } catch (error) {
